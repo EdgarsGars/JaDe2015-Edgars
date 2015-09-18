@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package m00.practice01;
-
 /**
- *
+ * @date 18.09.2015
  * @author Edgar_000
  */
 public class Search {
@@ -16,25 +10,56 @@ public class Search {
      *
      * @param x value to find
      * @param a array sorted in increasing order (a[0] <= a[1] <= ... <= a[n-1])
-	 * @retu
-     * rn lowest i such that a[i]==x, or -1 if x not found in a.
+     * @r
+     * eturn lowest i such that a[i]==x, or -1 if x not found in a.
      */
     public static int find(int x, int[] a) {
-        //call binarySearch
-        return 0;
+        if (isArraySorted(a)) {
+            return binarySearch(x, a, 0, a.length);
+        } else {
+            return -1;
+        }
     }
 
-    public static int binarySearch(int x, int[] a) {
-        // TODO finish implementation of binary search method
-        int mid = a.length / 2;
-        if (x < a[mid]) {
-            return binarySearch(x, a /*not a but left half of a */);
+    /**
+     * Recursive implementation of binary search algorithm
+     *
+     * @param x key element
+     * @param a array of elements
+     * @param from left bound of array
+     * @param to right bound of array
+     * @return lowest i such that a[i]==x, or -1 if x not found in a.
+     */
+    private static int binarySearch(int x, int[] a, int from, int to) {
+        int mid = (from + to) / 2;
+        if (from > to || from > a.length - 1) {
+            return -1;
+        } else if (x < a[mid]) {
+            return binarySearch(x, a, from, mid - 1);
         } else if (x > a[mid]) {
-            return binarySearch(x, a /*not a but right half of a */);
+            return binarySearch(x, a, mid + 1, to);
         } else {
-            return mid; // because x == a[mid], i.e. we found it!
+            if (mid != 0 && a[mid - 1] == a[mid]) {
+                return binarySearch(x, a, from, mid - 1);
+            } else {
+                return mid; 
+            }
         }
+    }
 
+    /**
+     * Checks if the Array is sorted
+     *
+     * @param a array of elements
+     * @return is array sorted or not
+     */
+    public static boolean isArraySorted(int[] a) {
+        for (int i = 1; i < a.length; i++) {
+            if (a[i] < a[i - 1]) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
